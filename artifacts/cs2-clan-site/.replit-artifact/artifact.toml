@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "CS2 Clan Website"
+description = "A focused Counter-Strike 2 clan website with a distinctive team identity, roster, match record, upcoming fixtures, and local client-side interactions ready for a future Supabase connection."
+version = "1.0.0"
+id = "artifacts/cs2-clan-site"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 20014
+
+[services.development]
+run = "pnpm --filter @workspace/cs2-clan-site run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/cs2-clan-site", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/cs2-clan-site/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "20014"
+BASE_PATH = "/"
