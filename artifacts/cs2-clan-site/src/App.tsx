@@ -1,5 +1,5 @@
-import { FormEvent, type ReactNode, useState } from 'react';
-import { ArrowRight, ArrowUpRight, CalendarDays, Check, ChevronDown, Crosshair, ExternalLink, Menu, MoveUpRight, Radio, Shield, Trophy, X, Zap } from 'lucide-react';
+import { FormEvent, type MouseEvent, type ReactNode, useState } from 'react';
+import { ArrowRight, ArrowUpRight, CalendarDays, Check, ChevronDown, Crosshair, ExternalLink, Menu, MessageCircle, MoveUpRight, Radio, Shield, Trophy, X, Zap } from 'lucide-react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ErrorBoundary } from '@/components/error-boundary';
 import { Toaster } from '@/components/ui/toaster';
@@ -18,27 +18,28 @@ function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [resultFilter, setResultFilter] = useState<'all' | 'major' | 'online'>('all');
   const [formSent, setFormSent] = useState(false);
+  const [discordNotice, setDiscordNotice] = useState(false);
 
   const navItems = [
     { label: 'Roster', href: '#roster' },
     { label: 'Results', href: '#results' },
-    { label: 'Next match', href: '#next-match' },
+    { label: 'News', href: '#news' },
     { label: 'Recruit', href: '#recruit' },
   ];
 
   const players = [
-    { number: '01', handle: 'Morrow', name: 'Elliot Ward', role: 'IGL / Entry', origin: 'GB', stat: '1.16', detail: 'Opening duel rate' },
-    { number: '07', handle: 'Sable', name: 'Noah Kim', role: 'AWPer', origin: 'CA', stat: '1.24', detail: 'Impact rating' },
-    { number: '12', handle: 'Vanta', name: 'Luka Petrović', role: 'Rifler', origin: 'RS', stat: '84.7%', detail: 'KAST this season' },
-    { number: '19', handle: 'Keel', name: 'Mikael Nordin', role: 'Anchor', origin: 'SE', stat: '0.93', detail: 'Clutch conversion' },
-    { number: '23', handle: 'Omen', name: 'Dario Bell', role: 'Support', origin: 'US', stat: '68.2%', detail: 'Utility damage share' },
+    { number: '01', handle: 'Player 01', name: 'Name placeholder', role: 'Role placeholder', origin: 'TBD', stat: '—', detail: 'Placeholder stat' },
+    { number: '07', handle: 'Player 02', name: 'Name placeholder', role: 'Role placeholder', origin: 'TBD', stat: '—', detail: 'Placeholder stat' },
+    { number: '12', handle: 'Player 03', name: 'Name placeholder', role: 'Role placeholder', origin: 'TBD', stat: '—', detail: 'Placeholder stat' },
+    { number: '19', handle: 'Player 04', name: 'Name placeholder', role: 'Role placeholder', origin: 'TBD', stat: '—', detail: 'Placeholder stat' },
+    { number: '23', handle: 'Player 05', name: 'Name placeholder', role: 'Role placeholder', origin: 'TBD', stat: '—', detail: 'Placeholder stat' },
   ];
 
   const results = [
-    { event: 'ESL Challenger League', opponent: 'SPECTRE', score: '2 — 1', date: '18.05.25', type: 'major', result: 'win' },
-    { event: 'CCT North Europe Series #7', opponent: 'HARDWIRED', score: '2 — 0', date: '11.05.25', type: 'online', result: 'win' },
-    { event: 'IEM Dallas Open Qualifier', opponent: 'MIRAGE', score: '1 — 2', date: '04.05.25', type: 'major', result: 'loss' },
-    { event: 'ESEA Advanced Playoffs', opponent: 'LATECHECK', score: '2 — 0', date: '27.04.25', type: 'online', result: 'win' },
+    { event: 'Event placeholder', opponent: 'Opponent placeholder', score: '— : —', date: 'Date TBD', type: 'major', result: 'placeholder' },
+    { event: 'Event placeholder', opponent: 'Opponent placeholder', score: '— : —', date: 'Date TBD', type: 'online', result: 'placeholder' },
+    { event: 'Event placeholder', opponent: 'Opponent placeholder', score: '— : —', date: 'Date TBD', type: 'major', result: 'placeholder' },
+    { event: 'Event placeholder', opponent: 'Opponent placeholder', score: '— : —', date: 'Date TBD', type: 'online', result: 'placeholder' },
   ];
 
   const filteredResults = resultFilter === 'all' ? results : results.filter((result) => result.type === resultFilter);
@@ -46,6 +47,11 @@ function Home() {
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setFormSent(true);
+  };
+
+  const handleDiscordClick = (event: MouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault();
+    setDiscordNotice(true);
   };
 
   return (
@@ -62,7 +68,7 @@ function Home() {
               <a key={item.href} href={item.href} data-testid={`link-nav-${item.label.toLowerCase().replace(' ', '-')}`} className="nav-link font-mono text-[.68rem] uppercase tracking-[.12em]">{item.label}</a>
             ))}
           </nav>
-          <a href="#recruit" data-testid="link-join-team" className="button-primary hidden sm:inline-flex">Join the system <ArrowRight size={14} /></a>
+          <a href="#discord" onClick={handleDiscordClick} data-testid="link-discord" className="button-primary hidden sm:inline-flex"><MessageCircle size={14} /> Join Discord</a>
           <button type="button" onClick={() => setMenuOpen((open) => !open)} aria-label={menuOpen ? 'Close menu' : 'Open menu'} data-testid="button-mobile-menu" className="border border-border p-2 text-foreground md:hidden">
             {menuOpen ? <X size={19} /> : <Menu size={19} />}
           </button>
@@ -80,6 +86,15 @@ function Home() {
         )}
       </header>
 
+      {discordNotice && (
+        <div className="fixed inset-x-0 top-[4.6rem] z-20 px-4 pt-3" role="status">
+          <div className="section-wrap discord-notice flex items-center justify-between gap-4 border border-accent/40 bg-sidebar px-4 py-3">
+            <span className="font-mono text-[.61rem] uppercase tracking-[.1em] text-accent">Discord invite placeholder — connect your community link later.</span>
+            <button type="button" onClick={() => setDiscordNotice(false)} aria-label="Dismiss Discord notice" className="text-muted-foreground hover:text-foreground"><X size={15} /></button>
+          </div>
+        </div>
+      )}
+
       <section id="top" className="relative min-h-[760px] border-b border-border pt-[4.6rem]">
         <div className="absolute inset-0 bg-[url('/nightshift-arena.png')] bg-cover bg-center opacity-60" aria-hidden="true" />
         <div className="hero-vignette absolute inset-0" aria-hidden="true" />
@@ -93,10 +108,13 @@ function Home() {
               <a href="#next-match" data-testid="button-hero-match" className="button-primary">View next match <ArrowRight size={15} /></a>
               <a href="#recruit" data-testid="button-hero-recruit" className="button-ghost">Open recruitment <MoveUpRight size={14} /></a>
             </div>
-            <div className="reveal reveal-delay-4 mt-20 grid max-w-[570px] grid-cols-3 gap-5 border-t border-border/80 pt-5">
-              <div><p className="font-mono text-[.61rem] uppercase tracking-[.13em] text-muted-foreground">World ranking</p><p data-testid="text-ranking" className="mt-2 font-display text-4xl font-bold">#34</p></div>
-              <div><p className="font-mono text-[.61rem] uppercase tracking-[.13em] text-muted-foreground">Form / last 10</p><p data-testid="text-form" className="mt-2 font-display text-4xl font-bold">7—3</p></div>
-              <div><p className="font-mono text-[.61rem] uppercase tracking-[.13em] text-muted-foreground">Since</p><p data-testid="text-since" className="mt-2 font-display text-4xl font-bold">2021</p></div>
+            <div className="reveal reveal-delay-4 mt-20 max-w-[570px] border-t border-border/80 pt-5">
+              <p className="placeholder-tag">Placeholder data / replace with Supabase</p>
+              <div className="mt-4 grid grid-cols-3 gap-5">
+                <div><p className="font-mono text-[.61rem] uppercase tracking-[.13em] text-muted-foreground">World ranking</p><p data-testid="text-ranking" className="mt-2 font-display text-4xl font-bold">—</p></div>
+                <div><p className="font-mono text-[.61rem] uppercase tracking-[.13em] text-muted-foreground">Form / last 10</p><p data-testid="text-form" className="mt-2 font-display text-4xl font-bold">—</p></div>
+                <div><p className="font-mono text-[.61rem] uppercase tracking-[.13em] text-muted-foreground">Founded</p><p data-testid="text-since" className="mt-2 font-display text-4xl font-bold">TBD</p></div>
+              </div>
             </div>
           </div>
           <div className="scanline absolute bottom-10 right-0 hidden h-24 w-48 border-l border-t border-primary/40 lg:block" aria-hidden="true">
@@ -111,9 +129,9 @@ function Home() {
         <div className="section-wrap flex min-w-max items-center gap-8">
           <span className="eyebrow text-primary">Latest transmission</span>
           <span className="h-1 w-1 bg-primary" />
-          <span className="font-mono text-[.66rem] uppercase tracking-[.14em] text-muted-foreground">NIGHTSHIFT secure a 2—1 against SPECTRE</span>
+          <span className="font-mono text-[.66rem] uppercase tracking-[.14em] text-muted-foreground">Placeholder result — connect match data later</span>
           <span className="text-border">/</span>
-          <span className="font-mono text-[.66rem] uppercase tracking-[.14em] text-muted-foreground">Next: versus KRAKEN // 29.05.25</span>
+          <span className="font-mono text-[.66rem] uppercase tracking-[.14em] text-muted-foreground">Next fixture placeholder // date TBD</span>
           <span className="text-border">/</span>
           <span className="font-mono text-[.66rem] uppercase tracking-[.14em] text-accent">Roster applications open</span>
         </div>
@@ -137,6 +155,7 @@ function Home() {
             <div><p className="eyebrow accent-line">Active roster / 05</p><h2 className="display-title mt-5 text-6xl md:text-8xl">The <span className="text-primary">five.</span></h2></div>
             <p className="max-w-[270px] font-mono text-[.65rem] uppercase leading-5 tracking-[.1em] text-muted-foreground">Same server.<br />Different angles.<br /><span className="text-accent">One read.</span></p>
           </div>
+          <p className="mb-5 placeholder-tag">Roster placeholder / replace names and roles with Supabase data</p>
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
             {players.map((player) => (
               <article key={player.handle} data-testid={`card-player-${player.handle.toLowerCase()}`} className="player-card hover-lift clip-corner flex flex-col justify-between p-5">
@@ -159,11 +178,14 @@ function Home() {
           <div>
             <p className="eyebrow accent-line">Competitive log</p>
             <h2 className="display-title mt-5 text-6xl md:text-8xl">Recent<br /><span className="text-primary">signal.</span></h2>
-            <div className="mt-10 grid max-w-xs grid-cols-2 gap-x-8 gap-y-6">
-              <div><p className="font-mono text-[.6rem] uppercase tracking-[.12em] text-muted-foreground">Win rate</p><p data-testid="text-win-rate" className="mt-1 font-display text-4xl font-bold">71.4%</p></div>
-              <div><p className="font-mono text-[.6rem] uppercase tracking-[.12em] text-muted-foreground">Maps won</p><p data-testid="text-maps-won" className="mt-1 font-display text-4xl font-bold">29</p></div>
-              <div><p className="font-mono text-[.6rem] uppercase tracking-[.12em] text-muted-foreground">Streak</p><p className="mt-1 font-display text-4xl font-bold text-accent">W3</p></div>
-              <div><p className="font-mono text-[.6rem] uppercase tracking-[.12em] text-muted-foreground">Peak rank</p><p className="mt-1 font-display text-4xl font-bold">#28</p></div>
+            <div className="mt-10">
+              <p className="placeholder-tag">Clan statistics placeholder / no live numbers yet</p>
+              <div className="mt-4 grid max-w-xs grid-cols-2 gap-x-8 gap-y-6">
+                <div><p className="font-mono text-[.6rem] uppercase tracking-[.12em] text-muted-foreground">Win rate</p><p data-testid="text-win-rate" className="mt-1 font-display text-4xl font-bold">—</p></div>
+                <div><p className="font-mono text-[.6rem] uppercase tracking-[.12em] text-muted-foreground">Maps won</p><p data-testid="text-maps-won" className="mt-1 font-display text-4xl font-bold">—</p></div>
+                <div><p className="font-mono text-[.6rem] uppercase tracking-[.12em] text-muted-foreground">Streak</p><p className="mt-1 font-display text-4xl font-bold text-accent">TBD</p></div>
+                <div><p className="font-mono text-[.6rem] uppercase tracking-[.12em] text-muted-foreground">Peak rank</p><p className="mt-1 font-display text-4xl font-bold">—</p></div>
+              </div>
             </div>
           </div>
           <div>
@@ -173,19 +195,19 @@ function Home() {
                   <button type="button" key={filter} onClick={() => setResultFilter(filter)} data-testid={`button-filter-${filter}`} className={`font-mono text-[.62rem] uppercase tracking-[.13em] transition-colors ${resultFilter === filter ? 'text-primary' : 'text-muted-foreground hover:text-foreground'}`}>{filter === 'all' ? 'All matches' : filter === 'major' ? 'LAN / qualifier' : 'Online'}</button>
                 ))}
               </div>
-              <span className="font-mono text-[.58rem] uppercase tracking-[.12em] text-muted-foreground">Season 04 / 2025</span>
+              <span className="font-mono text-[.58rem] uppercase tracking-[.12em] text-muted-foreground">Placeholder season</span>
             </div>
             <div className="space-y-2">
-              {filteredResults.length > 0 ? filteredResults.map((match) => (
-                <article key={`${match.date}-${match.opponent}`} data-testid={`row-result-${match.opponent.toLowerCase()}`} className="hover-lift group grid grid-cols-[1fr_auto] items-center gap-5 border-b border-border/70 py-5 md:grid-cols-[1fr_150px_90px_70px]">
+              {filteredResults.length > 0 ? filteredResults.map((match, index) => (
+                <article key={`${match.type}-${index}`} data-testid={`row-result-${match.type}-${index + 1}`} className="hover-lift group grid grid-cols-[1fr_auto] items-center gap-5 border-b border-border/70 py-5 md:grid-cols-[1fr_150px_90px_70px]">
                   <div><p className="font-mono text-[.59rem] uppercase tracking-[.11em] text-muted-foreground">{match.event}</p><h3 className="mt-1 font-display text-2xl font-bold uppercase tracking-tight">{match.opponent}</h3></div>
-                  <span className={`status-pill hidden md:block ${match.result === 'win' ? 'text-accent' : 'text-destructive'}`}>{match.result === 'win' ? 'Victory' : 'Defeat'}</span>
+                  <span className="status-pill hidden text-primary md:block">Placeholder</span>
                   <span className="font-display text-3xl font-bold tracking-tight">{match.score}</span>
                   <span className="font-mono text-[.59rem] uppercase tracking-[.1em] text-muted-foreground">{match.date}</span>
                 </article>
               )) : <div data-testid="empty-results" className="border border-dashed border-border p-10 text-center"><p className="font-display text-2xl uppercase">No transmissions</p><p className="mt-2 text-sm text-muted-foreground">This category is clear for now.</p></div>}
             </div>
-            <a href="#next-match" data-testid="link-full-results" className="mt-7 inline-flex items-center gap-2 font-mono text-[.65rem] uppercase tracking-[.14em] text-primary hover:text-foreground">Full match archive <ArrowRight size={14} /></a>
+            <a href="#news" data-testid="link-full-results" className="mt-7 inline-flex items-center gap-2 font-mono text-[.65rem] uppercase tracking-[.14em] text-primary hover:text-foreground">Continue to latest news <ArrowRight size={14} /></a>
           </div>
         </div>
       </section>
@@ -195,24 +217,45 @@ function Home() {
         <div className="topo-mark left-[52%] top-24 h-80 w-[28rem] opacity-30" aria-hidden="true" />
         <div className="section-wrap relative">
           <div className="flex flex-wrap items-end justify-between gap-6">
-            <div><p className="eyebrow accent-line">Next deployment</p><h2 className="display-title mt-5 text-6xl md:text-8xl">Eyes on<br /><span className="text-primary">KRAKEN.</span></h2></div>
-            <div className="flex items-center gap-2 font-mono text-[.62rem] uppercase tracking-[.14em] text-accent"><span className="h-2 w-2 animate-pulse bg-accent" /> Confirmed / broadcast</div>
+            <div><p className="eyebrow accent-line">Next match</p><h2 className="display-title mt-5 text-6xl md:text-8xl">Match<br /><span className="text-primary">TBD.</span></h2></div>
+            <div className="flex items-center gap-2 font-mono text-[.62rem] uppercase tracking-[.14em] text-primary"><span className="h-2 w-2 bg-primary" /> Fixture placeholder</div>
           </div>
           <div className="mt-12 grid gap-3 lg:grid-cols-[1.25fr_.75fr]">
             <article className="match-card next clip-corner relative overflow-hidden p-6 md:p-10">
-              <div className="flex items-center justify-between border-b border-border/80 pb-5"><span className="status-pill text-primary">Upper bracket / semi-final</span><span className="font-mono text-[.62rem] text-muted-foreground">29 MAY 2025</span></div>
+              <div className="flex items-center justify-between border-b border-border/80 pb-5"><span className="status-pill text-primary">Match details placeholder</span><span className="font-mono text-[.62rem] text-muted-foreground">DATE TBD</span></div>
               <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-4 py-12 md:py-16">
-                <div><div className="mb-4 flex h-14 w-14 items-center justify-center border border-primary bg-primary font-display text-4xl font-black text-primary-foreground">N</div><p className="font-display text-4xl font-bold uppercase md:text-5xl">NIGHTSHIFT</p><p className="mt-1 font-mono text-[.58rem] uppercase tracking-[.14em] text-muted-foreground">Current seed / 04</p></div>
-                <div className="text-center"><span className="font-mono text-xs uppercase tracking-[.16em] text-muted-foreground">vs</span><p data-testid="text-match-time" className="mt-3 font-display text-3xl font-bold text-primary md:text-4xl">20:30</p><p className="font-mono text-[.55rem] uppercase tracking-[.14em] text-muted-foreground">CET / BO3</p></div>
-                <div className="text-right"><div className="mb-4 ml-auto flex h-14 w-14 items-center justify-center border border-accent/60 bg-accent/10 font-display text-3xl font-black text-accent">K</div><p className="font-display text-4xl font-bold uppercase md:text-5xl">KRAKEN</p><p className="mt-1 font-mono text-[.58rem] uppercase tracking-[.14em] text-muted-foreground">Current seed / 01</p></div>
+                <div><div className="mb-4 flex h-14 w-14 items-center justify-center border border-primary bg-primary font-display text-4xl font-black text-primary-foreground">N</div><p className="font-display text-4xl font-bold uppercase md:text-5xl">NIGHTSHIFT</p><p className="mt-1 font-mono text-[.58rem] uppercase tracking-[.14em] text-muted-foreground">Team placeholder</p></div>
+                <div className="text-center"><span className="font-mono text-xs uppercase tracking-[.16em] text-muted-foreground">vs</span><p data-testid="text-match-time" className="mt-3 font-display text-3xl font-bold text-primary md:text-4xl">TBD</p><p className="font-mono text-[.55rem] uppercase tracking-[.14em] text-muted-foreground">Format TBD</p></div>
+                <div className="text-right"><div className="mb-4 ml-auto flex h-14 w-14 items-center justify-center border border-accent/60 bg-accent/10 font-display text-3xl font-black text-accent">?</div><p className="font-display text-4xl font-bold uppercase md:text-5xl">OPPONENT TBD</p><p className="mt-1 font-mono text-[.58rem] uppercase tracking-[.14em] text-muted-foreground">Opponent placeholder</p></div>
               </div>
-              <div className="flex flex-wrap items-center justify-between gap-4 border-t border-border/80 pt-5"><span className="font-mono text-[.62rem] uppercase tracking-[.12em] text-muted-foreground">Map veto pending</span><a href="#recruit" data-testid="link-match-details" className="button-primary">Match notes <ArrowRight size={14} /></a></div>
+              <div className="flex flex-wrap items-center justify-between gap-4 border-t border-border/80 pt-5"><span className="font-mono text-[.62rem] uppercase tracking-[.12em] text-muted-foreground">Match information placeholder</span><a href="#news" data-testid="link-match-details" className="button-primary">View news <ArrowRight size={14} /></a></div>
             </article>
             <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
-              <div className="glass-card p-6"><CalendarDays size={18} className="text-primary" /><p className="eyebrow mt-6">Where to watch</p><p className="mt-2 text-sm leading-6 text-muted-foreground">Live on the official broadcast. Our watch party opens 15 minutes before server.</p><a href="#recruit" data-testid="link-watch-party" className="mt-5 inline-flex items-center gap-2 font-mono text-[.62rem] uppercase tracking-[.13em] text-primary">Set a reminder <ArrowRight size={13} /></a></div>
-              <div className="glass-card p-6"><Crosshair size={18} className="text-accent" /><p className="eyebrow mt-6">The read</p><p className="mt-2 text-sm leading-6 text-muted-foreground">KRAKEN likes fast B hits and early information. We like patient defaults. Expect the quiet game.</p><div className="mt-5 flex items-center gap-2 font-mono text-[.62rem] uppercase tracking-[.13em] text-accent"><span className="h-1.5 w-1.5 bg-accent" /> Prep phase / live</div></div>
+              <div className="glass-card p-6"><CalendarDays size={18} className="text-primary" /><p className="eyebrow mt-6">Where to watch</p><p className="mt-2 text-sm leading-6 text-muted-foreground">Broadcast destination placeholder. Add the official stream link when the fixture is confirmed.</p><span className="mt-5 inline-flex items-center gap-2 font-mono text-[.62rem] uppercase tracking-[.13em] text-primary">Stream TBD <ArrowRight size={13} /></span></div>
+              <div className="glass-card p-6"><Crosshair size={18} className="text-accent" /><p className="eyebrow mt-6">Match notes</p><p className="mt-2 text-sm leading-6 text-muted-foreground">Opponent scouting and map notes will appear here once match data is connected.</p><div className="mt-5 flex items-center gap-2 font-mono text-[.62rem] uppercase tracking-[.13em] text-accent"><span className="h-1.5 w-1.5 bg-accent" /> Prep phase / placeholder</div></div>
             </div>
           </div>
+        </div>
+      </section>
+
+      <section id="news" className="section-wrap py-24 md:py-32">
+        <div className="mb-12 flex flex-wrap items-end justify-between gap-6">
+          <div><p className="eyebrow accent-line">Latest news</p><h2 className="display-title mt-5 text-6xl md:text-8xl">Signal<br /><span className="text-primary">feed.</span></h2></div>
+          <p className="max-w-xs font-mono text-[.65rem] uppercase leading-5 tracking-[.1em] text-muted-foreground">Placeholder posts are ready for your future CMS or Supabase feed.</p>
+        </div>
+        <div className="grid gap-3 md:grid-cols-3">
+          {[
+            { tag: 'News placeholder', title: 'Roster announcement placeholder', date: 'DATE TBD' },
+            { tag: 'Update placeholder', title: 'Tournament update placeholder', date: 'DATE TBD' },
+            { tag: 'Media placeholder', title: 'Matchday media placeholder', date: 'DATE TBD' },
+          ].map((item, index) => (
+            <article key={item.title} className="news-card hover-lift p-6" data-testid={`card-news-${index + 1}`}>
+              <div className="flex items-center justify-between gap-3"><span className="role-chip">{item.tag}</span><span className="font-mono text-[.58rem] uppercase tracking-[.1em] text-muted-foreground">{item.date}</span></div>
+              <h3 className="mt-14 max-w-[14rem] font-display text-4xl font-bold uppercase leading-[.9] tracking-tight">{item.title}</h3>
+              <p className="mt-5 text-sm leading-6 text-muted-foreground">Placeholder copy — replace with your clan's latest announcement when content is ready.</p>
+              <span className="mt-7 inline-flex items-center gap-2 font-mono text-[.62rem] uppercase tracking-[.13em] text-primary">Read more <ArrowUpRight size={13} /></span>
+            </article>
+          ))}
         </div>
       </section>
 
@@ -257,7 +300,7 @@ function Home() {
         <div className="section-wrap">
           <div className="flex flex-col justify-between gap-10 md:flex-row md:items-end">
             <div><a href="#top" data-testid="link-footer-home" className="flex items-center gap-3"><span className="flex h-8 w-8 items-center justify-center border border-primary bg-primary font-display text-lg font-black text-primary-foreground">N</span><span className="font-display text-2xl font-bold uppercase">Nightshift</span></a><p className="mt-5 max-w-xs font-mono text-[.59rem] uppercase leading-5 tracking-[.11em] text-muted-foreground">A CS2 team for the late hours.<br />© 2025 NIGHTSHIFT ESPORTS.</p></div>
-            <div className="flex flex-wrap gap-x-8 gap-y-4"><a href="#roster" data-testid="link-footer-roster" className="font-mono text-[.62rem] uppercase tracking-[.14em] text-muted-foreground hover:text-primary">Roster</a><a href="#results" data-testid="link-footer-results" className="font-mono text-[.62rem] uppercase tracking-[.14em] text-muted-foreground hover:text-primary">Results</a><a href="#recruit" data-testid="link-footer-contact" className="font-mono text-[.62rem] uppercase tracking-[.14em] text-muted-foreground hover:text-primary">Contact</a><a href="mailto:hello@nightshift.gg" data-testid="link-footer-email" className="inline-flex items-center gap-2 font-mono text-[.62rem] uppercase tracking-[.14em] text-primary hover:text-foreground">hello@nightshift.gg <ExternalLink size={12} /></a></div>
+            <div className="flex flex-wrap gap-x-8 gap-y-4"><a href="#roster" data-testid="link-footer-roster" className="font-mono text-[.62rem] uppercase tracking-[.14em] text-muted-foreground hover:text-primary">Roster</a><a href="#results" data-testid="link-footer-results" className="font-mono text-[.62rem] uppercase tracking-[.14em] text-muted-foreground hover:text-primary">Results</a><a href="#news" data-testid="link-footer-news" className="font-mono text-[.62rem] uppercase tracking-[.14em] text-muted-foreground hover:text-primary">News</a><a href="#discord" onClick={handleDiscordClick} data-testid="link-footer-discord" className="inline-flex items-center gap-2 font-mono text-[.62rem] uppercase tracking-[.14em] text-primary hover:text-foreground"><MessageCircle size={12} /> Discord</a><a href="#recruit" data-testid="link-footer-contact" className="font-mono text-[.62rem] uppercase tracking-[.14em] text-muted-foreground hover:text-primary">Contact</a><a href="mailto:hello@nightshift.gg" data-testid="link-footer-email" className="inline-flex items-center gap-2 font-mono text-[.62rem] uppercase tracking-[.14em] text-primary hover:text-foreground">hello@nightshift.gg <ExternalLink size={12} /></a></div>
           </div>
           <div className="mt-12 flex items-center justify-between border-t border-border/70 pt-4"><span className="font-mono text-[.56rem] uppercase tracking-[.14em] text-muted-foreground">Built for the next round</span><span className="font-mono text-[.56rem] uppercase tracking-[.14em] text-muted-foreground">Signal clear <span className="ml-2 inline-block h-1.5 w-1.5 bg-accent" /></span></div>
         </div>
