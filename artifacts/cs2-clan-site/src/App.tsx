@@ -15,31 +15,31 @@ const navItems = [
 const players = [
   {
     number: '01',
-    handle: 'SS',
+    handle: 'Unknown',
     role: 'IGL / RIFLER',
     region: 'MONGOLIA',
   },
   {
     number: '02',
-    handle: 'IBUPROFEN',
+    handle: 'Unknown',
     role: 'AWPER',
     region: 'MONGOLIA',
   },
   {
     number: '03',
-    handle: 'SST',
+    handle: 'Unknown',
     role: 'RIFLER',
     region: 'MONGOLIA',
   },
   {
     number: '04',
-    handle: 'THAILU',
+    handle: 'Unknown',
     role: 'ENTRY',
     region: 'MONGOLIA',
   },
   {
     number: '05',
-    handle: 'TSROIS',
+    handle: 'Unknown',
     role: 'SUPPORT',
     region: 'MONGOLIA',
   },
@@ -80,7 +80,7 @@ const newsItems = [
   {
     index: '01',
     tag: 'ROSTER',
-    title: 'CELESTEX шинэ бүрэлдэхүүнээ танилцууллаа',
+    title: 'POPULAR шинэ бүрэлдэхүүнээ танилцууллаа',
     date: '16.08.2026',
   },
   {
@@ -92,7 +92,7 @@ const newsItems = [
   {
     index: '03',
     tag: 'COMMUNITY',
-    title: 'CELESTEX Community-д нэгдээрэй',
+    title: 'POPULAR Community-д нэгдээрэй',
     date: 'OPEN NOW',
   },
 ];
@@ -269,7 +269,7 @@ function App() {
         <div className="broadcast-bar">
           <div className="broadcast-bar__track">
             <span className="signal-dot" />
-            CELESTEX CLAN
+            POPULAR CLAN
             <b>///</b>
             MONGOLIA
             <b>///</b>
@@ -277,7 +277,7 @@ function App() {
             <b>///</b>
             COMMUNITY OPEN
             <b>///</b>
-            CELESTEX CLAN
+            POPULAR CLAN
           </div>
         </div>
 
@@ -299,7 +299,7 @@ function App() {
               </h2>
 
               <p className="lead">
-                CELESTEX бол Counter-Strike 2 тоглогчид,
+                POPULAR бол Counter-Strike 2 тоглогчид,
                 баг болон community-г нэгтгэсэн Монголын
                 өрсөлдөөнт gaming clan юм.
               </p>
@@ -338,7 +338,7 @@ function App() {
               <NovaMark />
 
               <span className="about-emblem__label">
-                CELESTEX / MONGOLIA
+                POPULAR / MONGOLIA
               </span>
 
               <span className="about-emblem__line" />
@@ -368,7 +368,7 @@ function App() {
               </div>
 
               <p className="section-heading__aside">
-                CELESTEX active lineup
+                POPULAR active lineup
                 <br />
                 Counter-Strike 2
                 <br />
@@ -488,7 +488,7 @@ function App() {
                     <span>{match.event}</span>
 
                     <strong>
-                      CELESTEX
+                      POPULAR
                       <b> vs </b>
                       {match.opponent}
                     </strong>
@@ -539,7 +539,7 @@ function App() {
               </div>
 
               <p className="section-heading__aside">
-                CELESTEX performance
+                POPULAR performance
                 <br />
                 Verified statistics
                 <br />
@@ -616,7 +616,7 @@ function App() {
                     <h3>{item.title}</h3>
 
                     <p>
-                      CELESTEX-ийн албан ёсны мэдээлэл болон
+                      POPULAR-ийн албан ёсны мэдээлэл болон
                       шинэчлэлтүүдийг эндээс үзнэ үү.
                     </p>
 
@@ -650,11 +650,11 @@ function App() {
             <h2>
               Become
               <br />
-              <span>CELESTEX.</span>
+              <span>POPULAR.</span>
             </h2>
 
             <p>
-              CELESTEX-д нэгдэж, competitive community-ийн
+              POPULAR-д нэгдэж, competitive community-ийн
               нэг хэсэг болоорой. Тоглогч, staff эсвэл
               community member байсан ч бид таныг хүлээж байна.
             </p>
@@ -751,7 +751,7 @@ function App() {
             <NovaMark compact />
 
             <span className="brand__words">
-              <strong>CELESTEX</strong>
+              <strong>POPULAR</strong>
               <span>CLAN</span>
             </span>
           </a>
@@ -780,7 +780,7 @@ function App() {
 
         <div className="container footer-bottom">
           <span>
-            © {new Date().getFullYear()} CELESTEX CLAN
+            © {new Date().getFullYear()} POPULAR CLAN
           </span>
 
           <span>
